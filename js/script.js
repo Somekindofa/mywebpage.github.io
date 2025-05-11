@@ -132,7 +132,7 @@ function initDroneSimulator() {
     if (!container) return;
     
     let scene, camera, renderer, drone, propellers = [], clock, mixer;
-    let isAnimating = false;
+    let isAnimating = true; // This is now set to true by default
     let isSimulationRunning = false;
     
     // Set up the scene
@@ -172,6 +172,9 @@ function initDroneSimulator() {
         
         // Add mouse controls for rotation
         addMouseControls();
+        
+        // Initialize event listeners for buttons
+        initButtons();
         
         // Start the animation loop
         animate();
@@ -243,26 +246,24 @@ function initDroneSimulator() {
     function animate() {
         requestAnimationFrame(animate);
         
-        if (isAnimating) {
-            const delta = clock.getDelta();
+        const delta = clock.getDelta();
+        
+        // Animate propellers
+        propellers.forEach((prop, index) => {
+            prop.rotation.y += (index % 2 === 0 ? 0.3 : -0.3) * (isSimulationRunning ? 2 : 0);
             
-            // Animate propellers
-            propellers.forEach((prop, index) => {
-                prop.rotation.y += (index % 2 === 0 ? 0.3 : -0.3) * (isSimulationRunning ? 2 : 0);
-                
-                // Update propeller position to follow drone
-                prop.position.x = drone.position.x + (index === 0 || index === 3 ? 0.3 : -0.3);
-                prop.position.z = drone.position.z + (index === 0 || index === 1 ? 0.3 : -0.3);
-                prop.position.y = drone.position.y + 0.1;
-            });
-            
-            // If simulation is running, add some gentle movement
-            if (isSimulationRunning) {
-                const time = Date.now() * 0.001;
-                drone.position.y = Math.sin(time * 1.5) * 0.05 + 0.2;
-                drone.rotation.x = Math.sin(time) * 0.02;
-                drone.rotation.z = Math.cos(time * 0.8) * 0.02;
-            }
+            // Update propeller position to follow drone
+            prop.position.x = drone.position.x + (index === 0 || index === 3 ? 0.3 : -0.3);
+            prop.position.z = drone.position.z + (index === 0 || index === 1 ? 0.3 : -0.3);
+            prop.position.y = drone.position.y + 0.1;
+        });
+        
+        // If simulation is running, add some gentle movement
+        if (isSimulationRunning) {
+            const time = Date.now() * 0.001;
+            drone.position.y = Math.sin(time * 1.5) * 0.05 + 0.2;
+            drone.rotation.x = Math.sin(time) * 0.02;
+            drone.rotation.z = Math.cos(time * 0.8) * 0.02;
         }
         
         renderer.render(scene, camera);
@@ -313,32 +314,34 @@ function initDroneSimulator() {
         });
     }
     
-    // Event listeners for buttons
-    const startButton = document.getElementById('start-simulation');
-    const resetButton = document.getElementById('reset-simulation');
-    
-    if (startButton) {
-        startButton.addEventListener('click', () => {
-            isSimulationRunning = !isSimulationRunning;
-            startButton.textContent = isSimulationRunning ? 'Pause Simulation' : 'Start Simulation';
-        });
-    }
-    
-    if (resetButton) {
-        resetButton.addEventListener('click', () => {
-            // Reset drone position and rotation
-            drone.position.set(0, 0, 0);
-            drone.rotation.set(0, 0, 0);
-            isSimulationRunning = false;
-            if (startButton) {
-                startButton.textContent = 'Start Simulation';
-            }
-        });
+    // Initialize button event listeners
+    function initButtons() {
+        const startButton = document.getElementById('start-simulation');
+        const resetButton = document.getElementById('reset-simulation');
+        
+        if (startButton) {
+            startButton.addEventListener('click', () => {
+                isSimulationRunning = !isSimulationRunning;
+                startButton.textContent = isSimulationRunning ? 'Pause Simulation' : 'Start Simulation';
+                console.log('Simulation running:', isSimulationRunning); // Debug log
+            });
+        }
+        
+        if (resetButton) {
+            resetButton.addEventListener('click', () => {
+                // Reset drone position and rotation
+                drone.position.set(0, 0, 0);
+                drone.rotation.set(0, 0, 0);
+                isSimulationRunning = false;
+                if (startButton) {
+                    startButton.textContent = 'Start Simulation';
+                }
+            });
+        }
     }
     
     // Start everything
     init();
-    isAnimating = true;
     
     // Make sure the Three.js scene is properly initialized when the tab becomes visible
     document.querySelectorAll('#nav-tabs li').forEach(tab => {
