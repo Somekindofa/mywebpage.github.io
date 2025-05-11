@@ -22,32 +22,47 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         // Show the selected tab content
-        document.getElementById(tabId).classList.add('active');
-        
-        // Add active class to the selected tab
-        const activeTab = document.querySelector(`[data-tab="${tabId}"]`);
-        if (activeTab) {
-            activeTab.classList.add('active');
-        }
-        
-        // Scroll to top when switching tabs
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-        
-        // Update browser history if pushState is true
-        if (pushState) {
-            history.pushState({ tabId: tabId }, '', `#${tabId}`);
+        const tabContent = document.getElementById(tabId);
+        if (tabContent) {
+            tabContent.classList.add('active');
+            
+            // Add active class to the selected tab
+            const activeTab = document.querySelector(`[data-tab="${tabId}"]`);
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
+            
+            // Scroll to top when switching tabs
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            
+            // Update browser history if pushState is true
+            if (pushState) {
+                history.pushState({ tabId: tabId }, '', `#${tabId}`);
+            }
         }
     }
     
     // Add click event to tabs
     tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            const tabId = tab.getAttribute('data-tab');
-            switchTab(tabId);
-        });
+        const tabId = tab.getAttribute('data-tab');
+        const link = tab.querySelector('a');
+        
+        if (link) {
+            link.addEventListener('click', (e) => {
+                // Only intercept clicks for internal navigation
+                if (link.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    switchTab(tabId);
+                }
+            });
+        } else {
+            tab.addEventListener('click', () => {
+                switchTab(tabId);
+            });
+        }
     });
     
     // Add click event to tab links
@@ -64,8 +79,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.state && event.state.tabId) {
             switchTab(event.state.tabId, false);
         } else {
-            // Default to home tab if no state is available
-            switchTab('home', false);
+            // Get tab from URL hash, or default to home
+            const tabId = window.location.hash ? window.location.hash.substring(1) : 'home';
+            if (document.getElementById(tabId)) {
+                switchTab(tabId, false);
+            } else {
+                switchTab('home', false);
+            }
         }
     });
     
@@ -131,8 +151,7 @@ function initDroneSimulator() {
     // Only initialize if the container exists (i.e., we're on the projects page)
     if (!container) return;
     
-    let scene, camera, renderer, drone, propellers = [], clock, mixer;
-    let isAnimating = true; // This is now set to true by default
+    let scene, camera, renderer, drone, propellers = [], clock;
     let isSimulationRunning = false;
     
     // Set up the scene
@@ -323,7 +342,6 @@ function initDroneSimulator() {
             startButton.addEventListener('click', () => {
                 isSimulationRunning = !isSimulationRunning;
                 startButton.textContent = isSimulationRunning ? 'Pause Simulation' : 'Start Simulation';
-                console.log('Simulation running:', isSimulationRunning); // Debug log
             });
         }
         

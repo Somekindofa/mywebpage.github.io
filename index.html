@@ -18,18 +18,25 @@
     
     <header>
         <div class="logo">
-            <span class="logo-text">Tinkerer<span class="highlight">Lair</span></span>
+            <a href="index.html" class="logo-link">
+                <span class="logo-text">Tinkerer<span class="highlight">Lair</span></span>
+            </a>
         </div>
         <nav class="main-nav">
             <ul id="nav-tabs">
-                <li class="active" data-tab="home">Home</li>
-                <li data-tab="machine-learning">Machine Learning</li>
-                <li data-tab="robotics">Robotics</li>
-                <li data-tab="projects">Projects</li>
-                <li data-tab="about">About</li>
+                <li class="active" data-tab="home"><a href="#home">Home</a></li>
+                <li data-tab="machine-learning"><a href="#machine-learning">Machine Learning</a></li>
+                <li data-tab="robotics"><a href="#robotics">Robotics</a></li>
+                <li data-tab="projects"><a href="#projects">Projects</a></li>
+                <li data-tab="about"><a href="#about">About</a></li>
             </ul>
         </nav>
     </header>
+
+    <!-- Previous button -->
+    <button class="prev-button" onclick="window.history.back()" title="Go back">
+        <i class="fas fa-chevron-left"></i>
+    </button>
 
     <main>
         <section id="home" class="tab-content active">
@@ -37,8 +44,8 @@
                 <h1 class="welcome-text">Welcome to my <span class="highlight">Learning Journey</span></h1>
                 <p class="welcome-description">Exploring the fascinating worlds of machine learning, robotics, and more</p>
                 <div class="welcome-buttons">
-                    <a href="#" class="btn primary" data-tab-link="projects">View Projects</a>
-                    <a href="#" class="btn secondary" data-tab-link="about">About Me</a>
+                    <a href="#projects" class="btn primary" data-tab-link="projects">View Projects</a>
+                    <a href="#about" class="btn secondary" data-tab-link="about">About Me</a>
                 </div>
             </div>
             <div class="feature-cards">
@@ -46,19 +53,19 @@
                     <div class="card-icon"><i class="fas fa-brain"></i></div>
                     <h3>Machine Learning</h3>
                     <p>Exploring neural networks, reinforcement learning, and more</p>
-                    <a href="#" class="card-link" data-tab-link="machine-learning">Learn More</a>
+                    <a href="#machine-learning" class="card-link" data-tab-link="machine-learning">Learn More</a>
                 </div>
                 <div class="card">
                     <div class="card-icon"><i class="fas fa-robot"></i></div>
                     <h3>Robotics</h3>
                     <p>From drone stabilization to robotic control systems</p>
-                    <a href="#" class="card-link" data-tab-link="robotics">Learn More</a>
+                    <a href="#robotics" class="card-link" data-tab-link="robotics">Learn More</a>
                 </div>
                 <div class="card">
                     <div class="card-icon"><i class="fas fa-project-diagram"></i></div>
                     <h3>Projects</h3>
                     <p>Interactive demos, visualizations, and experiments</p>
-                    <a href="#" class="card-link" data-tab-link="projects">Explore</a>
+                    <a href="#projects" class="card-link" data-tab-link="projects">Explore</a>
                 </div>
             </div>
         </section>
@@ -101,9 +108,11 @@
             <h2>Interactive <span class="highlight">Projects</span></h2>
             <div class="projects-grid">
                 <div class="project-card">
-                    <div id="drone-simulator" class="project-image threejs-container"></div>
-                    <h3>3D Drone Simulator</h3>
-                    <p>An interactive 3D drone simulator with reinforcement learning. You can rotate the drone by dragging your mouse.</p>
+                    <a href="projects/drone-simulator.html" class="project-link">
+                        <div id="drone-simulator" class="project-image threejs-container"></div>
+                        <h3>3D Drone Simulator</h3>
+                        <p>An interactive 3D drone simulator with reinforcement learning. Click to explore the full project.</p>
+                    </a>
                     <div class="project-controls">
                         <button id="start-simulation" class="btn primary">Start Simulation</button>
                         <button id="reset-simulation" class="btn secondary">Reset</button>
@@ -147,7 +156,7 @@
 
     <footer>
         <div class="footer-content">
-            <p>&copy; <span id="current-year">2025</span> Tech Explorer. Created with ❤️ and curiosity.</p>
+            <p>&copy; <span id="current-year">2025</span> Tinkerer Lair. Created with ❤️ and curiosity.</p>
             <div class="social-links">
                 <a href="https://github.com/yourusername" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
                 <a href="https://linkedin.com/in/yourprofile" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
