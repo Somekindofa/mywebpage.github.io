@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Explorer - Learning Journey</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="noise-overlay"></div>
+    
+    <header>
+        <div class="logo">
+            <span class="logo-text">Tech<span class="highlight">Explorer</span></span>
+        </div>
+        <nav class="main-nav">
+            <ul id="nav-tabs">
+                <li class="active" data-tab="home">Home</li>
+                <li data-tab="machine-learning">Machine Learning</li>
+                <li data-tab="robotics">Robotics</li>
+                <li data-tab="projects">Projects</li>
+                <li data-tab="about">About</li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="tab-content active">
+            <div class="welcome-container">
+                <h1 class="welcome-text">Welcome to my <span class="highlight">Learning Journey</span></h1>
+                <p class="welcome-description">Exploring the fascinating worlds of machine learning, robotics, and more</p>
+                <div class="welcome-buttons">
+                    <a href="#" class="btn primary" data-tab-link="projects">View Projects</a>
+                    <a href="#" class="btn secondary" data-tab-link="about">About Me</a>
+                </div>
+            </div>
+            <div class="feature-cards">
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-brain"></i></div>
+                    <h3>Machine Learning</h3>
+                    <p>Exploring neural networks, reinforcement learning, and more</p>
+                    <a href="#" class="card-link" data-tab-link="machine-learning">Learn More</a>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-robot"></i></div>
+                    <h3>Robotics</h3>
+                    <p>From drone stabilization to robotic control systems</p>
+                    <a href="#" class="card-link" data-tab-link="robotics">Learn More</a>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-project-diagram"></i></div>
+                    <h3>Projects</h3>
+                    <p>Interactive demos, visualizations, and experiments</p>
+                    <a href="#" class="card-link" data-tab-link="projects">Explore</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="machine-learning" class="tab-content">
+            <h2>Machine Learning <span class="highlight">Explorations</span></h2>
+            <div class="content-grid">
+                <div class="content-item">
+                    <h3>Reinforcement Learning for Drone Stabilization</h3>
+                    <p>Comparing traditional PID control with reinforcement learning approaches to drone stabilization.</p>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="content-item">
+                    <h3>Neural Networks Visualized</h3>
+                    <p>Interactive visualizations of neural networks and their decision boundaries.</p>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <!-- Add more content items as you create them -->
+            </div>
+        </section>
+
+        <section id="robotics" class="tab-content">
+            <h2>Robotics <span class="highlight">Adventures</span></h2>
+            <div class="content-grid">
+                <div class="content-item">
+                    <h3>Drone Control Systems</h3>
+                    <p>Exploring the fundamentals of drone control and stabilization mechanisms.</p>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="content-item">
+                    <h3>PID vs. Adaptive Control</h3>
+                    <p>A comparative analysis of traditional PID control and adaptive control methods.</p>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <!-- Add more content items as you create them -->
+            </div>
+        </section>
+
+        <section id="projects" class="tab-content">
+            <h2>Interactive <span class="highlight">Projects</span></h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image placeholder-image"></div>
+                    <h3>3D Drone Simulator</h3>
+                    <p>An interactive 3D drone simulator where you can test different control algorithms.</p>
+                    <div class="coming-soon-badge">In Development</div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image placeholder-image"></div>
+                    <h3>Neural Network Playground</h3>
+                    <p>Build and train simple neural networks right in your browser.</p>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <!-- Add more project cards as you create them -->
+            </div>
+        </section>
+
+        <section id="about" class="tab-content">
+            <h2>About <span class="highlight">Me</span></h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Welcome to my digital playground! I'm passionate about exploring the intersections of machine learning, robotics, and various other technical domains.</p>
+                    <p>This site serves as my "Alibaba cave" of knowledge - a place where I document my learning journey and share it in a fun, engaging, and accessible way.</p>
+                    <p>My goal is to break down complex technical concepts into digestible, interactive demonstrations that anyone can understand and enjoy.</p>
+                    <h3>Why This Site Exists</h3>
+                    <p>Learning is most fulfilling when shared. By documenting and explaining what I learn, I deepen my own understanding while hopefully helping others grasp these fascinating topics.</p>
+                    <p>Feel free to explore the various sections, and check back regularly as I continue to add new content and interactive demonstrations!</p>
+                </div>
+                <div class="skills-container">
+                    <h3>Skills & Interests</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Machine Learning</span>
+                        <span class="skill-tag">Robotics</span>
+                        <span class="skill-tag">Control Theory</span>
+                        <span class="skill-tag">Data Visualization</span>
+                        <span class="skill-tag">Interactive Web Apps</span>
+                        <!-- Add more skills as relevant -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; <span id="current-year">2025</span> Tech Explorer. Created with ❤️ and curiosity.</p>
+            <div class="social-links">
+                <a href="https://github.com/yourusername" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com/in/yourprofile" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://twitter.com/yourhandle" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
