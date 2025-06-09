@@ -22,12 +22,12 @@
                 <span class="logo-text">Tinkerer<span class="highlight">Lair</span></span>
             </a>
         </div>
-        <nav class="main-nav">
-            <ul id="nav-tabs">
+        <nav class="main-nav">            <ul id="nav-tabs">
                 <li class="active" data-tab="home"><a href="#home">Home</a></li>
                 <li data-tab="machine-learning"><a href="#machine-learning">Machine Learning</a></li>
                 <li data-tab="robotics"><a href="#robotics">Robotics</a></li>
                 <li data-tab="projects"><a href="#projects">Projects</a></li>
+                <li data-tab="deputes"><a href="#deputes">French Députés</a></li>
                 <li data-tab="about"><a href="#about">About</a></li>
             </ul>
         </nav>
@@ -47,8 +47,7 @@
                     <a href="#projects" class="btn primary" data-tab-link="projects">View Projects</a>
                     <a href="#about" class="btn secondary" data-tab-link="about">About Me</a>
                 </div>
-            </div>
-            <div class="feature-cards">
+            </div>            <div class="feature-cards">
                 <div class="card">
                     <div class="card-icon"><i class="fas fa-brain"></i></div>
                     <h3>Machine Learning</h3>
@@ -66,6 +65,12 @@
                     <h3>Projects</h3>
                     <p>Interactive demos, visualizations, and experiments</p>
                     <a href="#projects" class="card-link" data-tab-link="projects">Explore</a>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-chart-pie"></i></div>
+                    <h3>Data Visualization</h3>
+                    <p>Political data analysis and interactive visualizations</p>
+                    <a href="#deputes" class="card-link" data-tab-link="deputes">View Analysis</a>
                 </div>
             </div>
         </section>
@@ -117,14 +122,101 @@
                         <button id="start-simulation" class="btn primary">Start Simulation</button>
                         <button id="reset-simulation" class="btn secondary">Reset</button>
                     </div>
-                </div>
-                <div class="project-card">
+                </div>                <div class="project-card">
                     <div class="project-image placeholder-image"></div>
                     <h3>Neural Network Playground</h3>
                     <p>Build and train simple neural networks right in your browser.</p>
                     <div class="coming-soon-badge">Coming Soon</div>
                 </div>
+                <div class="project-card">
+                    <a href="projects/french-deputes.html" class="project-link">
+                        <div class="project-image hemicycle-preview">
+                            <div class="hemicycle-mockup">
+                                <div class="seat-row">
+                                    <div class="seat present"></div>
+                                    <div class="seat absent"></div>
+                                    <div class="seat present"></div>
+                                    <div class="seat present"></div>
+                                    <div class="seat absent"></div>
+                                </div>
+                                <div class="seat-row">
+                                    <div class="seat present"></div>
+                                    <div class="seat present"></div>
+                                    <div class="seat absent"></div>
+                                    <div class="seat present"></div>
+                                    <div class="seat present"></div>
+                                    <div class="seat absent"></div>
+                                </div>
+                                <div class="seat-row">
+                                    <div class="seat present"></div>
+                                    <div class="seat absent"></div>
+                                    <div class="seat present"></div>
+                                    <div class="seat present"></div>
+                                    <div class="seat present"></div>
+                                    <div class="seat absent"></div>
+                                    <div class="seat present"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3>French Députés Analysis</h3>
+                        <p>Interactive hemicycle visualization of French National Assembly attendance data with React.</p>
+                    </a>
+                </div>
                 <!-- Add more project cards as you create them -->
+            </div>        </section>
+
+        <section id="deputes" class="tab-content">
+            <h2>French <span class="highlight">Députés</span> Absence Analysis</h2>
+            <div class="deputes-content">
+                <div class="intro-text">
+                    <p>An interactive visualization of French National Assembly attendance data, featuring a dynamic hemicycle representation that shows deputy attendance patterns and political group distributions.</p>
+                </div>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <a href="projects/french-deputes.html" class="project-link">
+                            <div class="project-image hemicycle-preview">
+                                <div class="hemicycle-mockup">
+                                    <div class="seat-row">
+                                        <div class="seat present"></div>
+                                        <div class="seat absent"></div>
+                                        <div class="seat present"></div>
+                                        <div class="seat present"></div>
+                                        <div class="seat absent"></div>
+                                    </div>
+                                    <div class="seat-row">
+                                        <div class="seat present"></div>
+                                        <div class="seat present"></div>
+                                        <div class="seat absent"></div>
+                                        <div class="seat present"></div>
+                                        <div class="seat present"></div>
+                                        <div class="seat absent"></div>
+                                    </div>
+                                    <div class="seat-row">
+                                        <div class="seat present"></div>
+                                        <div class="seat absent"></div>
+                                        <div class="seat present"></div>
+                                        <div class="seat present"></div>
+                                        <div class="seat present"></div>
+                                        <div class="seat absent"></div>
+                                        <div class="seat present"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h3>Interactive Hemicycle Visualization</h3>
+                            <p>Explore French National Assembly attendance data with this React-based interactive hemicycle. Filter by political groups, dates, and view detailed absence statistics.</p>
+                        </a>
+                    </div>
+                    <div class="stats-overview">
+                        <h3>Key Features</h3>
+                        <ul>
+                            <li><i class="fas fa-chart-pie"></i> Real-time attendance visualization</li>
+                            <li><i class="fas fa-filter"></i> Filter by political groups and dates</li>
+                            <li><i class="fas fa-users"></i> Individual deputy profiles and statistics</li>
+                            <li><i class="fas fa-calendar-alt"></i> Historical attendance trends</li>
+                            <li><i class="fas fa-mobile-alt"></i> Responsive design for all devices</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </section>
 

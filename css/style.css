@@ -181,9 +181,19 @@ main {
 /* Feature Cards */
 .feature-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 2rem;
   margin: 3rem 0;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* For larger screens, ensure 2x2 layout for 4 cards */
+@media (min-width: 1024px) {
+  .feature-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .card {
@@ -576,6 +586,138 @@ footer {
   }
 }
 
+/* French Députés Section */
+.deputes-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.intro-text {
+  text-align: center;
+  margin-bottom: 3rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.intro-text p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--color-light-semi);
+}
+
+/* Hemicycle preview mockup */
+.hemicycle-preview {
+  background: var(--gradient-card);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hemicycle-mockup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transform: perspective(600px) rotateX(15deg);
+}
+
+.seat-row {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.seat-row:nth-child(2) {
+  margin-left: -15px;
+}
+
+.seat-row:nth-child(3) {
+  margin-left: -30px;
+}
+
+.seat {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.seat.present {
+  background: var(--color-accent);
+  box-shadow: 0 0 8px rgba(0, 255, 213, 0.4);
+}
+
+.seat.absent {
+  background: #ff6b6b;
+  box-shadow: 0 0 8px rgba(255, 107, 107, 0.4);
+}
+
+.seat:hover {
+  transform: scale(1.2);
+}
+
+/* Stats overview */
+.stats-overview {
+  background: var(--gradient-card);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.stats-overview h3 {
+  color: var(--color-primary);
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+}
+
+.stats-overview ul {
+  list-style: none;
+  display: grid;
+  gap: 1rem;
+}
+
+.stats-overview li {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1rem;
+  color: var(--color-light-semi);
+}
+
+.stats-overview i {
+  color: var(--color-accent);
+  width: 20px;
+  text-align: center;
+}
+
+/* Animation for hemicycle seats */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.hemicycle-preview:hover .seat {
+  animation: pulse 2s infinite;
+}
+
+.hemicycle-preview:hover .seat:nth-child(odd) {
+  animation-delay: 0.1s;
+}
+
+.hemicycle-preview:hover .seat:nth-child(even) {
+  animation-delay: 0.2s;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   header {
@@ -583,11 +725,11 @@ footer {
     gap: 1rem;
     padding: 1rem 5%;
   }
-  
-  .main-nav ul {
-    gap: 1rem;
+    .main-nav ul {
+    gap: 0.8rem;
     flex-wrap: wrap;
     justify-content: center;
+    font-size: 0.9rem;
   }
   
   .welcome-text {

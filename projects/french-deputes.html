@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Députés - Tinkerer Lair</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/deputes.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;900&family=Roboto:wght@300;400;700&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    
+    <!-- React and Babel for JSX transformation -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- D3.js for data visualization -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <div class="noise-overlay"></div>
+    
+    <header>
+        <div class="logo">
+            <a href="../index.html" class="logo-link">
+                <span class="logo-text">Tinkerer<span class="highlight">Lair</span></span>
+            </a>
+        </div>
+        <nav class="project-nav">
+            <a href="../index.html#deputes" class="nav-link">
+                <i class="fas fa-arrow-left"></i> Back to Députés
+            </a>
+        </nav>
+    </header>
+
+    <!-- Previous button -->
+    <button class="prev-button" onclick="window.history.back()" title="Go back">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <main class="project-main">
+        <div class="project-header">
+            <h1>French <span class="highlight">Députés</span> Absence Analysis</h1>
+            <p class="project-description">
+                Interactive visualization of French National Assembly attendance data. 
+                Explore deputy attendance patterns, political group distributions, and historical trends 
+                through an authentic hemicycle representation.
+            </p>
+        </div>
+
+        <!-- Controls Panel -->
+        <div class="controls-panel">
+            <div class="control-group">
+                <label for="date-selector">Session Date:</label>
+                <select id="date-selector">
+                    <option value="2024-01-15">January 15, 2024</option>
+                    <option value="2024-01-22">January 22, 2024</option>
+                    <option value="2024-02-05">February 5, 2024</option>
+                    <option value="2024-02-12">February 12, 2024</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="group-filter">Political Group:</label>                <select id="group-filter">
+                    <option value="all">All Groups</option>
+                    <option value="RN">Rassemblement National</option>
+                    <option value="RE">Renaissance</option>
+                    <option value="LR">Les Républicains</option>
+                    <option value="LFI">La France Insoumise</option>
+                    <option value="PS">Parti Socialiste</option>
+                    <option value="EELV">Europe Écologie Les Verts</option>
+                    <option value="UDI">Union des Démocrates</option>
+                    <option value="GDR">Gauche Démocrate</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <button id="animation-toggle" class="btn primary">
+                    <i class="fas fa-play"></i> Start Animation
+                </button>
+            </div>
+        </div>
+
+        <!-- Statistics Dashboard -->
+        <div class="stats-dashboard">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-content">
+                    <div class="stat-number" id="total-deputies">577</div>
+                    <div class="stat-label">Total Députés</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon present"><i class="fas fa-user-check"></i></div>
+                <div class="stat-content">
+                    <div class="stat-number" id="present-count">423</div>
+                    <div class="stat-label">Present</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon absent"><i class="fas fa-user-times"></i></div>
+                <div class="stat-content">
+                    <div class="stat-number" id="absent-count">154</div>
+                    <div class="stat-label">Absent</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+                <div class="stat-content">
+                    <div class="stat-number" id="attendance-rate">73.3%</div>
+                    <div class="stat-label">Attendance Rate</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- React Hemicycle Component Container -->
+        <div class="hemicycle-container">
+            <div id="hemicycle-app"></div>
+        </div>
+
+        <!-- Deputy Details Panel -->
+        <div class="deputy-details" id="deputy-details" style="display: none;">
+            <div class="deputy-info">
+                <button class="close-details" onclick="closeDeputyDetails()">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="deputy-avatar">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <div class="deputy-content">
+                    <h3 id="deputy-name">Deputy Name</h3>
+                    <p id="deputy-group">Political Group</p>
+                    <div class="deputy-stats">
+                        <div class="deputy-stat">
+                            <span class="label">Attendance Rate:</span>
+                            <span id="deputy-attendance" class="value">0%</span>
+                        </div>
+                        <div class="deputy-stat">
+                            <span class="label">Sessions Attended:</span>
+                            <span id="deputy-sessions" class="value">0/0</span>
+                        </div>
+                        <div class="deputy-stat">
+                            <span class="label">Constituency:</span>
+                            <span id="deputy-constituency" class="value">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend">
+            <h3>Legend</h3>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-color present"></div>
+                    <span>Present</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color absent"></div>
+                    <span>Absent</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color excused"></div>
+                    <span>Excused Absence</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color mission"></div>
+                    <span>On Mission</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Information -->
+        <div class="project-info">
+            <h2>About This <span class="highlight">Project</span></h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3><i class="fas fa-database"></i> Data Source</h3>
+                    <p>Attendance data is sourced from the official French National Assembly records, 
+                    providing accurate and up-to-date information on deputy participation.</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3><i class="fas fa-code"></i> Technology Stack</h3>
+                    <p>Built with React.js for interactive components, D3.js for data visualization, 
+                    and modern CSS for responsive design and animations.</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3><i class="fas fa-chart-line"></i> Features</h3>
+                    <p>Interactive hemicycle layout, real-time filtering, detailed deputy profiles, 
+                    attendance statistics, and animated visualizations.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Tinkerer Lair. Educational project for data visualization learning.</p>
+            <div class="social-links">
+                <a href="#" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="#" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- React Hemicycle Component -->
+    <script type="text/babel">        // Sample deputy data (in a real application, this would come from an API)
+        const sampleDeputies = [
+            // Generate sample data for 577 deputies
+            ...Array.from({length: 577}, (_, i) => {
+                const groups = ['RN', 'LR', 'RE', 'LFI', 'PS', 'EELV', 'UDI', 'GDR'];
+                const groupNames = {
+                    'RN': 'Rassemblement National',
+                    'LR': 'Les Républicains', 
+                    'RE': 'Renaissance',
+                    'LFI': 'La France Insoumise',
+                    'PS': 'Parti Socialiste',
+                    'EELV': 'Europe Écologie Les Verts',
+                    'UDI': 'Union des Démocrates',
+                    'GDR': 'Gauche Démocrate'
+                };
+                const group = groups[Math.floor(Math.random() * groups.length)];
+                return {
+                    id: i + 1,
+                    name: `${['M.', 'Mme'][Math.floor(Math.random() * 2)]} ${['Martin', 'Bernard', 'Dubois', 'Thomas', 'Robert', 'Richard', 'Petit', 'Durand', 'Leroy', 'Moreau'][Math.floor(Math.random() * 10)]} ${['Jean', 'Pierre', 'Michel', 'André', 'Philippe', 'Marie', 'Alain', 'René', 'Louis', 'Paul'][Math.floor(Math.random() * 10)]}`,
+                    group: group,
+                    groupName: groupNames[group],
+                    present: Math.random() > 0.27, // ~73% attendance rate
+                    constituency: `${['Ain', 'Aisne', 'Allier', 'Alpes-de-Haute-Provence', 'Hautes-Alpes', 'Alpes-Maritimes', 'Ardèche', 'Ardennes', 'Ariège', 'Aube'][Math.floor(Math.random() * 10)]} - ${Math.floor(Math.random() * 10) + 1}ème`,
+                    attendanceRate: Math.floor(Math.random() * 40) + 60, // 60-100%
+                    sessionsAttended: Math.floor(Math.random() * 50) + 30,
+                    totalSessions: 80,
+                    row: Math.floor(i / 30) + 1,
+                    position: i % 30
+                };
+            })
+        ];
+
+        // Group colors matching real French political parties
+        const groupColors = {
+            'RN': '#1e3a5f',      // Dark blue for RN
+            'LR': '#0066cc',      // Blue for LR
+            'RE': '#ffb300',      // Yellow/Orange for Renaissance
+            'LFI': '#cc0000',     // Red for LFI
+            'PS': '#ff69b4',      // Pink for PS
+            'EELV': '#00cc66',    // Green for EELV
+            'UDI': '#ff8c00',     // Orange for UDI
+            'GDR': '#8b0000'      // Dark red for GDR
+        };
+
+        // React Hemicycle Component
+        const HemicycleVisualization = () => {
+            const [deputies, setDeputies] = React.useState(sampleDeputies);
+            const [selectedGroup, setSelectedGroup] = React.useState('all');
+            const [selectedDate, setSelectedDate] = React.useState('2024-01-15');
+            const [isAnimating, setIsAnimating] = React.useState(false);
+
+            // Filter deputies based on selected group
+            const filteredDeputies = selectedGroup === 'all' 
+                ? deputies 
+                : deputies.filter(d => d.group === selectedGroup);
+
+            // Calculate statistics
+            const totalDeputies = filteredDeputies.length;
+            const presentCount = filteredDeputies.filter(d => d.present).length;
+            const absentCount = totalDeputies - presentCount;
+            const attendanceRate = ((presentCount / totalDeputies) * 100).toFixed(1);
+
+            // Update statistics in the DOM
+            React.useEffect(() => {
+                document.getElementById('total-deputies').textContent = totalDeputies;
+                document.getElementById('present-count').textContent = presentCount;
+                document.getElementById('absent-count').textContent = absentCount;
+                document.getElementById('attendance-rate').textContent = attendanceRate + '%';
+            }, [totalDeputies, presentCount, absentCount, attendanceRate]);            // Handle deputy click
+            const handleDeputyClick = (deputy) => {
+                const detailsPanel = document.getElementById('deputy-details');
+                document.getElementById('deputy-name').textContent = deputy.name;
+                document.getElementById('deputy-group').textContent = deputy.groupName || deputy.group;
+                document.getElementById('deputy-attendance').textContent = deputy.attendanceRate + '%';
+                document.getElementById('deputy-sessions').textContent = `${deputy.sessionsAttended}/${deputy.totalSessions}`;
+                document.getElementById('deputy-constituency').textContent = deputy.constituency;
+                detailsPanel.style.display = 'block';
+            };
+
+            // Generate hemicycle seats arrangement
+            const generateHemicyclePositions = (totalSeats) => {
+                const positions = [];
+                const rows = 15; // Number of rows in the hemicycle
+                const centerX = 400; // Center of the hemicycle
+                const centerY = 350; // Bottom center
+                
+                let seatIndex = 0;
+                
+                for (let row = 0; row < rows; row++) {
+                    const radius = 80 + (row * 20); // Increasing radius for each row
+                    const seatsInRow = Math.floor(12 + (row * 2.5)); // More seats in outer rows
+                    const angleStep = Math.PI / (seatsInRow - 1); // Spread across semicircle
+                    
+                    for (let seat = 0; seat < seatsInRow && seatIndex < totalSeats; seat++) {
+                        const angle = seat * angleStep; // From 0 to π
+                        const x = centerX - (radius * Math.cos(angle));
+                        const y = centerY - (radius * Math.sin(angle));
+                        
+                        positions.push({
+                            x: x,
+                            y: y,
+                            row: row,
+                            seat: seat
+                        });
+                        
+                        seatIndex++;
+                    }
+                }
+                
+                return positions;
+            };
+
+            const seatPositions = React.useMemo(() => generateHemicyclePositions(577), []);
+
+            return (
+                <div className="hemicycle-visualization">
+                    <svg width="800" height="400" viewBox="0 0 800 400">
+                        {filteredDeputies.slice(0, seatPositions.length).map((deputy, index) => {
+                            const position = seatPositions[index];
+                            const seatColor = deputy.present ? '#00ffd5' : '#ff6b6b';
+                            const groupColor = groupColors[deputy.group] || '#666';
+                            
+                            return (
+                                <circle
+                                    key={deputy.id}
+                                    cx={position.x}
+                                    cy={position.y}
+                                    r="4"
+                                    fill={seatColor}
+                                    stroke={groupColor}
+                                    strokeWidth="1"
+                                    className={`deputy-seat ${deputy.present ? 'present' : 'absent'}`}
+                                    style={{
+                                        cursor: 'pointer',
+                                        transition: 'all 0.3s ease',
+                                        opacity: isAnimating ? '0.8' : '1'
+                                    }}
+                                    onClick={() => handleDeputyClick(deputy)}
+                                    onMouseOver={(e) => {
+                                        e.target.setAttribute('r', '6');
+                                        e.target.style.opacity = '1';
+                                    }}
+                                    onMouseOut={(e) => {
+                                        e.target.setAttribute('r', '4');
+                                        e.target.style.opacity = isAnimating ? '0.8' : '1';
+                                    }}
+                                />
+                            );
+                        })}
+                        
+                        {/* Hemicycle outline */}
+                        <path
+                            d="M 100 350 A 300 300 0 0 1 700 350"
+                            fill="none"
+                            stroke="rgba(110, 68, 255, 0.3)"
+                            strokeWidth="2"
+                            strokeDasharray="5,5"
+                        />
+                        
+                        {/* Center podium */}
+                        <rect
+                            x="375"
+                            y="320"
+                            width="50"
+                            height="30"
+                            fill="rgba(110, 68, 255, 0.5)"
+                            rx="5"
+                        />
+                        <text
+                            x="400"
+                            y="340"
+                            textAnchor="middle"
+                            fill="white"
+                            fontSize="10"
+                            fontFamily="Orbitron"
+                        >
+                            PODIUM
+                        </text>
+                    </svg>
+                </div>
+            );
+        };
+
+        // Render the React component
+        ReactDOM.render(<HemicycleVisualization />, document.getElementById('hemicycle-app'));
+    </script>
+
+    <!-- Main JavaScript for interactions -->
+    <script>
+        // Close deputy details panel
+        function closeDeputyDetails() {
+            document.getElementById('deputy-details').style.display = 'none';
+        }
+
+        // Handle controls
+        document.getElementById('date-selector').addEventListener('change', (e) => {
+            // In a real app, this would fetch new data
+            console.log('Date changed to:', e.target.value);
+        });
+
+        document.getElementById('group-filter').addEventListener('change', (e) => {
+            // This would trigger a re-render of the React component with filtered data
+            console.log('Group filter changed to:', e.target.value);
+        });
+
+        // Animation toggle
+        let animationRunning = false;
+        document.getElementById('animation-toggle').addEventListener('click', (e) => {
+            animationRunning = !animationRunning;
+            const button = e.target;
+            const icon = button.querySelector('i');
+            
+            if (animationRunning) {
+                button.innerHTML = '<i class="fas fa-pause"></i> Pause Animation';
+                // Start animation logic here
+                animateAttendance();
+            } else {
+                button.innerHTML = '<i class="fas fa-play"></i> Start Animation';
+                // Stop animation logic here
+            }
+        });
+
+        function animateAttendance() {
+            if (!animationRunning) return;
+            
+            const seats = document.querySelectorAll('.deputy-seat');
+            seats.forEach((seat, index) => {
+                setTimeout(() => {
+                    seat.style.transform = 'scale(1.2)';
+                    setTimeout(() => {
+                        seat.style.transform = 'scale(1)';
+                    }, 200);
+                }, index * 10);
+            });
+            
+            if (animationRunning) {
+                setTimeout(animateAttendance, 3000);
+            }
+        }
+
+        // Add smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
